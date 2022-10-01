@@ -1,5 +1,5 @@
-import debug from 'debug'
-import { LoggerLevel } from './types'
+import debug from "debug";
+import { LoggerLevel } from "./types";
 
 /**
  * Return a composite function allowing to log message from a defined logger mapping.
@@ -35,14 +35,14 @@ export function setupLogger<TLoggerMapping extends object>(
       TLoggerNamespace extends keyof TLoggerMapping[TLoggerName]
     >(namespace: TLoggerNamespace) {
       return function log(loggerLevel: LoggerLevel): debug.Debugger {
-        const finalNamespace = [name, namespace, loggerLevel].join(':')
-        return debug(finalNamespace)
-      }
-    }
-  }
+        const finalNamespace = [name, namespace, loggerLevel].join(":");
+        return debug(finalNamespace);
+      };
+    };
+  };
 
   return {
     newLogger,
-    debug
-  }
+    debug,
+  };
 }

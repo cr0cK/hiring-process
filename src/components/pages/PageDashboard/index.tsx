@@ -1,4 +1,4 @@
-import LayoutHCF from '../../common/Layouts/LayoutHCF'
+import { useStores } from "../../../hooks/useStores";
 
 export interface IPageWelcomeProps {}
 
@@ -6,23 +6,9 @@ export interface IPageWelcomeProps {}
  * Dashboard page.
  */
 export function PageDashboard(props: IPageWelcomeProps) {
-  return (
-    <LayoutHCF
-      name="PageDiscovery"
-      body={{
-        variants: ['page'],
-        node: (
-          <LayoutHCF
-            name="PageDiscovery"
-            body={{
-              variants: ['pageContent'],
-              node: <p>This is the dashboard page.</p>
-            }}
-          />
-        )
-      }}
-    />
-  )
+  const { storePageDashboard } = useStores();
+
+  return <p>Welcome {storePageDashboard.userName}</p>;
 }
 
-export default PageDashboard
+export default PageDashboard;

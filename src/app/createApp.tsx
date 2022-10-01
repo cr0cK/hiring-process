@@ -1,9 +1,9 @@
-import Root from 'src/components/Root'
-import StoreRoot from '../stores/StoreRoot'
+import Root from "../components/Root";
+import StoreRoot from "../stores/StoreRoot";
 
 interface IApp {
-  rootComponent: React.ReactNode
-  storeRoot: StoreRoot
+  rootComponent: React.ReactChild | Iterable<React.ReactNode>;
+  storeRoot: StoreRoot;
 }
 
 /**
@@ -17,23 +17,23 @@ export function createApp(): Promise<IApp> {
        * Instanciate Root store and initialize the application.
        */
       .then(() => {
-        return new StoreRoot().init().then(storeRoot => {
+        return new StoreRoot().init().then((storeRoot) => {
           if (!storeRoot) {
-            throw new Error('Cant create app')
+            throw new Error("Cant create app");
           }
 
-          return storeRoot
-        })
+          return storeRoot;
+        });
       })
 
       /**
        * Return the Root component and the root store.
        */
-      .then(storeRoot => {
+      .then((storeRoot) => {
         return {
           rootComponent: <Root storeRoot={storeRoot} />,
-          storeRoot
-        }
+          storeRoot,
+        };
       })
-  )
+  );
 }

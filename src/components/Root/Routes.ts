@@ -1,32 +1,32 @@
-import { IRouteDefinition, Routes } from 'src/libs/UrlBuilder/types'
+import { IRouteDefinition, Routes } from "../../libs/UrlBuilder/types";
 
 export enum AppRouteName {
-  'Root' = 'Root',
-  'HomePage' = 'HomePage',
+  "Root" = "Root",
+  "HomePage" = "HomePage",
 
   /* Mains */
 
-  'Dashboard' = 'Dashboard'
+  "Dashboard" = "Dashboard",
 }
 
 /* Routes definitions */
 
 export interface IRootRouteDefinition extends IRouteDefinition<AppRouteName> {
-  routeName: AppRouteName.Root
+  routeName: AppRouteName.Root;
 }
 
 export interface IHomePageRouteDefinition
   extends IRouteDefinition<AppRouteName> {
-  routeName: AppRouteName.HomePage
-  parameters: {}
+  routeName: AppRouteName.HomePage;
+  parameters: {};
 }
 
 // --- Main
 
 export interface IDashboardRouteDefinition
   extends IRouteDefinition<AppRouteName> {
-  routeName: AppRouteName.Dashboard
-  parameters: {}
+  routeName: AppRouteName.Dashboard;
+  parameters: {};
 }
 
 /* Union of all routes */
@@ -34,7 +34,7 @@ export interface IDashboardRouteDefinition
 export type AppRouteDefinition =
   | IRootRouteDefinition
   | IHomePageRouteDefinition
-  | IDashboardRouteDefinition
+  | IDashboardRouteDefinition;
 
 /* Routes record */
 
@@ -42,18 +42,18 @@ export const appRoutes: Routes<AppRouteName> = {
   [AppRouteName.Root]: {
     routeName: AppRouteName.Root,
     abstract: true,
-    pathname: '/'
+    pathname: "/",
   },
 
   [AppRouteName.HomePage]: {
     routeName: AppRouteName.HomePage,
-    pathname: '/'
+    pathname: "/",
   },
 
   /* --- Dashboard */
 
   [AppRouteName.Dashboard]: {
     routeName: AppRouteName.Dashboard,
-    pathname: '/dashboard'
-  }
-}
+    pathname: "/dashboard",
+  },
+};

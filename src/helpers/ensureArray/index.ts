@@ -1,19 +1,19 @@
-import { Perhaps } from 'src/types'
-import { isDefined } from '../isDefined'
+import { Perhaps } from "../../types";
+import { isDefined } from "../isDefined";
 
 /**
  * Ensure that an array is returned if v is null or undefined.
  */
 export function ensureArray<T>(v: Perhaps<T | T[]>): T[] {
   if (!isDefined(v)) {
-    return []
+    return [];
   }
 
   if (Array.isArray(v)) {
-    return v
+    return v;
   }
 
-  return [v]
+  return [v];
 }
 
 /**
@@ -21,15 +21,15 @@ export function ensureArray<T>(v: Perhaps<T | T[]>): T[] {
  */
 export function ensureSet<T>(s: Perhaps<T | Set<T>>): Set<T> {
   if (!isDefined(s)) {
-    return new Set<T>()
+    return new Set<T>();
   }
 
   try {
-    if ('has' in s) {
-      return s
+    if ("has" in s) {
+      return s;
     }
-    throw new Error()
+    throw new Error();
   } catch (err) {
-    return new Set<T>().add(s as T)
+    return new Set<T>().add(s as T);
   }
 }

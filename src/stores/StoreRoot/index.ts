@@ -1,30 +1,30 @@
-import { StorePageDashboard } from '..'
+import { StorePageDashboard } from "..";
 
-import { UrlBuilderClient } from 'src/libs/UrlBuilder/types'
-import UrlBuilder from 'src/libs/UrlBuilder/UrlBuilder'
-import { Maybe } from 'src/types'
-import { IStores } from '../types'
-import { newLogger } from 'src/libs/logger'
-import { appRoutes } from 'src/components/Root/Routes'
+import { UrlBuilderClient } from "../../libs/UrlBuilder/types";
+import UrlBuilder from "../../libs/UrlBuilder/UrlBuilder";
+import { Maybe } from "../../types";
+import { IStores } from "../types";
+import { newLogger } from "../../libs/logger";
+import { appRoutes } from "../../components/Root/Routes";
 
 export default class StoreRoot {
-  private _logger = newLogger('client')
+  private _logger = newLogger("client");
 
-  private _urlBuilder: UrlBuilderClient
+  private _urlBuilder: UrlBuilderClient;
 
-  private _stores: Maybe<IStores> = null
+  private _stores: Maybe<IStores> = null;
 
   constructor() {
-    this._urlBuilder = new UrlBuilder(appRoutes)
+    this._urlBuilder = new UrlBuilder(appRoutes);
 
-    this._instanciateStores()
+    this._instanciateStores();
   }
 
   /**
    * General initialization.
    */
   init(): Promise<false | this> {
-    return Promise.resolve(this)
+    return Promise.resolve(this);
   }
 
   /**
@@ -32,24 +32,24 @@ export default class StoreRoot {
    */
   get stores(): IStores {
     if (!this._stores) {
-      throw new Error('Stores are not defined')
+      throw new Error("Stores are not defined");
     }
 
-    return this._stores
+    return this._stores;
   }
 
   /**
    * Return the UrlBuilderClient instance.
    */
   get urlBuilder(): UrlBuilderClient {
-    return this._urlBuilder
+    return this._urlBuilder;
   }
 
   /**
    * Return the logger.
    */
   get logger(): typeof this._logger {
-    return this._logger
+    return this._logger;
   }
 
   /* Private */
@@ -64,7 +64,7 @@ export default class StoreRoot {
       /* Page stores */
 
       /** Pages stores - Dashboard */
-      storePageDashboard: new StorePageDashboard(this, {})
-    }
+      storePageDashboard: new StorePageDashboard(this, {}),
+    };
   }
 }

@@ -1,7 +1,7 @@
-import StoreRoot from 'src/stores/StoreRoot'
-import StoreBase from 'src/stores/StoreRoot/StoreBase'
-import { IStoreOptions } from 'src/stores/types'
-import { action, computed, makeObservable, observable } from 'mobx'
+import StoreRoot from "../../../stores/StoreRoot";
+import StoreBase from "../../../stores/StoreRoot/StoreBase";
+import { IStoreOptions } from "../../../stores/types";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export default class StorePageDashboard extends StoreBase {
   /**
@@ -9,11 +9,11 @@ export default class StorePageDashboard extends StoreBase {
    */
 
   @observable
-  private _userName: string = ''
+  private _userName: string = "Batman";
 
   constructor(storeRoot: StoreRoot, options: IStoreOptions) {
-    super(storeRoot, options)
-    makeObservable(this)
+    super(storeRoot, options);
+    makeObservable(this);
   }
 
   /**
@@ -26,15 +26,15 @@ export default class StorePageDashboard extends StoreBase {
 
   @action
   reset(): this {
-    this._userName = ''
+    this._userName = "";
 
-    return this
+    return this;
   }
 
   @action
   setUserName(userName: string): this {
-    this._userName = userName
-    return this
+    this._userName = userName;
+    return this;
   }
 
   /**
@@ -43,6 +43,6 @@ export default class StorePageDashboard extends StoreBase {
 
   @computed
   get userName(): string {
-    return this._userName
+    return this._userName;
   }
 }

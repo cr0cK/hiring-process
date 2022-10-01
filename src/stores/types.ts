@@ -1,12 +1,12 @@
-import { Maybe } from 'src/types'
-import * as stores from '.'
+import { Maybe } from "../types";
+import * as stores from ".";
 
 export interface IStores {
   /* Common stores */
 
   /* Page stores */
 
-  storePageDashboard: stores.StorePageDashboard
+  storePageDashboard: stores.StorePageDashboard;
 }
 
 /**
@@ -22,14 +22,14 @@ export interface IStoreOptions {}
 /**
  * Interface use for Stores that need to be "rehydrated" from (react-)query data.
  */
-export type StoreRehydrateFn<TReturnData> = () => TReturnData
+export type StoreRehydrateFn<TReturnData> = () => TReturnData;
 
 export interface IStoreRehydrated<TReturnData> {
-  updatedAt: Maybe<string>
-  rehydrate(fn: StoreRehydrateFn<Maybe<TReturnData>>): this
+  updatedAt: Maybe<string>;
+  rehydrate(fn: StoreRehydrateFn<Maybe<TReturnData>>): this;
 }
 
 export interface IStoreListMeta<T> {
-  key: string
-  value: T
+  key: string;
+  value: T;
 }

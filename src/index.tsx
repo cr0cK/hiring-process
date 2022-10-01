@@ -1,37 +1,37 @@
-import { newLogger } from 'src/libs/logger'
-import { configure } from 'mobx'
-import ReactDOM from 'react-dom/client'
-import { createApp } from './app/createApp'
+import { newLogger } from "./libs/logger";
+import { configure } from "mobx";
+import ReactDOM from "react-dom/client";
+import { createApp } from "./app/createApp";
 
-const logger = newLogger('client')('internal')
+const logger = newLogger("client")("internal");
 
 // enable MobX strict mode
-configure({ enforceActions: 'always', useProxies: 'always' })
+configure({ enforceActions: "always", useProxies: "always" });
 
 /**
  * Create app and hook the root component into the DOM.
  */
 createApp()
-  .then(app => {
-    const htmlTagId = 'app'
-    const htmlTag = document.getElementById(htmlTagId)
+  .then((app) => {
+    const htmlTagId = "app";
+    const htmlTag = document.getElementById(htmlTagId);
 
     if (!htmlTag) {
       throw new Error(
         `The HTML tag with the ID "${htmlTagId}" has not been found!`
-      )
+      );
     }
 
-    ReactDOM.createRoot(htmlTag).render(app.rootComponent)
+    ReactDOM.createRoot(htmlTag).render(app.rootComponent);
 
-    return true
+    return true;
   })
-  .catch(err => {
-    logger('error')(
-      'An error has occurred when creating root component: %s',
+  .catch((err) => {
+    logger("error")(
+      "An error has occurred when creating root component: %s",
       err instanceof Error && err.message
-    )
-    logger('debug')('Error details: %O', err instanceof Error && err.stack)
+    );
+    logger("debug")("Error details: %O", err instanceof Error && err.stack);
 
-    return false
-  })
+    return false;
+  });

@@ -1,31 +1,31 @@
-import { setupLogger } from 'src/libs/logger/setupLogger'
+import { setupLogger } from "../../libs/logger/setupLogger";
 
-export type Logger = ReturnType<typeof newLogger>
+export type Logger = ReturnType<typeof newLogger>;
 
-export type NamespaceLogger = ReturnType<Logger>
+export type NamespaceLogger = ReturnType<Logger>;
 
 export const loggerMapping = {
   client: {
     // layers
-    react: 'react',
-    stores: 'stores',
-    queries: 'queries',
+    react: "react",
+    stores: "stores",
+    queries: "queries",
 
     // domains
-    internal: 'internal',
-    authentication: 'authentication'
+    internal: "internal",
+    authentication: "authentication",
   },
 
   common: {
-    stubs: 'stubs'
+    stubs: "stubs",
   },
 
   server: {
-    init: 'init',
-    config: 'config'
-  }
-}
+    init: "init",
+    config: "config",
+  },
+};
 
-const { newLogger, debug } = setupLogger(loggerMapping)
+const { newLogger, debug } = setupLogger(loggerMapping);
 
-export { newLogger, debug }
+export { newLogger, debug };

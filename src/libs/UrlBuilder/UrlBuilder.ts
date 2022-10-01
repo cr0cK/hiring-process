@@ -1,62 +1,62 @@
-import { ensureArray } from 'src/helpers/ensureArray'
-import { isDefined } from 'src/helpers/isDefined'
-import { newLogger } from 'src/libs/logger'
-import { Maybe, MaybeUndef } from 'src/types'
-import { History, Location } from 'history'
-import { get, omit } from 'lodash'
-import { parse as parseQs, stringify as stringifyQs } from 'qs'
-import { matchPath, NavigateFunction } from 'react-router-dom'
-import { forgeClientPathname } from './helpers'
-import { sortRouteNames } from './sortRouteNames'
+import { ensureArray } from "../../helpers/ensureArray";
+import { isDefined } from "../../helpers/isDefined";
+import { newLogger } from "../../libs/logger";
+import { Maybe, MaybeUndef } from "../../types";
+import { History, Location } from "history";
+import { get, omit } from "lodash";
+import { parse as parseQs, stringify as stringifyQs } from "qs";
+import { matchPath, NavigateFunction } from "react-router-dom";
+import { forgeClientPathname } from "./helpers";
+import { sortRouteNames } from "./sortRouteNames";
 import {
   IRouteDefinition,
   IRouteInfo,
   IRouteSorted,
   IRouteSpecs,
   Routes,
-  RouteUrlParameters
-} from './types'
+  RouteUrlParameters,
+} from "./types";
 
 export default class UrlBuilder<
   R extends string,
   RD extends IRouteDefinition<R>
 > {
-  private _logger = newLogger('client')('internal')
+  private _logger = newLogger("client")("internal");
 
-  private _sortedRoutes: Array<IRouteSorted<RD['routeName']>> = []
+  private _sortedRoutes: Array<IRouteSorted<RD["routeName"]>> = [];
 
-  private _defaultRouteParameters: Maybe<RouteUrlParameters> = null
+  private _defaultRouteParameters: Maybe<RouteUrlParameters> = null;
 
-  private _history: Maybe<History> = null
+  private _history: Maybe<History> = null;
 
-  private _location: Maybe<Location> = null
+  private _location: Maybe<Location> = null;
 
-  private _navigate: Maybe<NavigateFunction> = null
+  private _navigate: Maybe<NavigateFunction> = null;
 
   /**
    * Instanciate a new UrlBuilder from a Record type of routes.
    */
-  constructor(private _routes: Routes<RD['routeName']>) {
+  constructor(private _routes: Routes<RD["routeName"]>) {
     // compute reversed route to be able to retrieve the route name from a pathname
-    const mappedRoutes = (Object.keys(_routes) as Array<RD['routeName']>).map(
-      routeName => {
-        const { pathname } = _routes[routeName]
-        const regexpStr = pathname.replace(/:(\w+)/g, '[^/]+')
-        const regexp = new RegExp(`^${regexpStr}$`) // match precise
+    const mappedRoutes = (Object.keys(_routes) as Array<RD["routeName"]>).map(
+      (routeName) => {
+        const { pathname } = _routes[routeName];
+        const regexpStr = pathname.replace(/:(\w+)/g, "[^/]+");
+        const regexp = new RegExp(`^${regexpStr}$`); // match precise
 
         return {
           pathname,
           regexp,
-          routeName
-        }
+          routeName,
+        };
       }
-    )
+    );
 
     // sort static and dynamic routes
     this._sortedRoutes = sortRouteNames(
       mappedRoutes,
-      (route: IRouteSpecs<RD['routeName']>) => route.pathname
-    )
+      (route: IRouteSpecs<RD["routeName"]>) => route.pathname
+    );
   }
 
   /**
@@ -65,76 +65,76 @@ export default class UrlBuilder<
   setRouterDefaultRouteParameters(
     defaultRouteParameters: RouteUrlParameters
   ): this {
-    this._defaultRouteParameters = defaultRouteParameters
-    return this
+    this._defaultRouteParameters = defaultRouteParameters;
+    return this;
   }
 
   /**
    * Set the history object.
    */
   setHistory(history: History): this {
-    this._history = history
+    this._history = history;
 
     if (!this._location) {
-      this._location = history.location
+      this._location = history.location;
     }
 
-    return this
+    return this;
   }
 
   /**
    * Set the location object.
    */
   setLocation(location: Location): this {
-    this._location = location
-    return this
+    this._location = location;
+    return this;
   }
 
   /**
    * Set the navigate function.
    */
   setNavigateFunction(navigate: NavigateFunction): this {
-    this._navigate = navigate
-    return this
+    this._navigate = navigate;
+    return this;
   }
 
   /**
    * Return the pathname of a routeName.
    */
-  getRoutePathname(routeName: RD['routeName']): string {
-    const routeInfo = this._routes[routeName]
+  getRoutePathname(routeName: RD["routeName"]): string {
+    const routeInfo = this._routes[routeName];
 
     if (!routeInfo) {
-      this._logger('warn')(`Route ${routeName} has not been found.`)
-      return ''
+      this._logger("warn")(`Route ${routeName} has not been found.`);
+      return "";
     }
 
-    return routeInfo.pathname
+    return routeInfo.pathname;
   }
 
   /**
    * Return the relative pathname between two routes.
    */
   getRelativeRoutesPathname(
-    fromRouteName: RD['routeName'],
-    toRouteName: RD['routeName']
+    fromRouteName: RD["routeName"],
+    toRouteName: RD["routeName"]
   ): string {
-    const fromPathname = this.getRoutePathname(fromRouteName)
-    const toPathname = this.getRoutePathname(toRouteName)
-    return toPathname.replace(fromPathname, '').replace(/^\/*/, '')
+    const fromPathname = this.getRoutePathname(fromRouteName);
+    const toPathname = this.getRoutePathname(toRouteName);
+    return toPathname.replace(fromPathname, "").replace(/^\/*/, "");
   }
 
   /**
    * Return the routeName of the passed pathname.
    */
-  getRouteName(pathname: string): Maybe<RD['routeName']> {
+  getRouteName(pathname: string): Maybe<RD["routeName"]> {
     for (let i = 0; i <= this._sortedRoutes.length - 1; i++) {
       if (this._sortedRoutes[i].regexp.test(pathname)) {
-        return this._sortedRoutes[i].routeName
+        return this._sortedRoutes[i].routeName;
       }
     }
 
-    return null
+    return null;
   }
 
   /**
@@ -144,67 +144,67 @@ export default class UrlBuilder<
    * that limits `this.props.match.params` to the parameters available relative
    * to the <Route /> component.
    */
-  getRouteParameters<T extends RD>(route: T | T[]): Maybe<T['parameters']> {
-    const location = this._assertLocationDefined()
+  getRouteParameters<T extends RD>(route: T | T[]): Maybe<T["parameters"]> {
+    const location = this._assertLocationDefined();
 
     for (const _route of ensureArray(route)) {
-      const path = this.getRoutePathname(_route.routeName)
-      const match = matchPath(`${path}/*`, location.pathname)
+      const path = this.getRoutePathname(_route.routeName);
+      const match = matchPath(`${path}/*`, location.pathname);
 
       if (match) {
         return this._castParameters(
           _route,
-          omit(match.params, ['*']) as Record<string, string>
-        )
+          omit(match.params, ["*"]) as Record<string, string>
+        );
       }
     }
 
-    return null
+    return null;
   }
 
   /**
    * Return the specifications of a routeName.
    */
-  getRouteSpecs(routeName: RD['routeName']): IRouteSpecs<RD['routeName']> {
-    return this._routes[routeName]
+  getRouteSpecs(routeName: RD["routeName"]): IRouteSpecs<RD["routeName"]> {
+    return this._routes[routeName];
   }
 
   /**
    * Return the routeName of the current pathname of the history object.
    */
-  getCurrentRouteName(): Maybe<RD['routeName']> {
-    const location = this._assertLocationDefined()
+  getCurrentRouteName(): Maybe<RD["routeName"]> {
+    const location = this._assertLocationDefined();
 
     if (!location.pathname) {
-      return null
+      return null;
     }
 
-    return this.getRouteName(location.pathname)
+    return this.getRouteName(location.pathname);
   }
 
   /**
    * Return the pathname of the current routeName.
    */
   getCurrentRoutePathname(): Maybe<string> {
-    const routeName = this.getCurrentRouteName()
+    const routeName = this.getCurrentRouteName();
 
     if (!routeName) {
-      return null
+      return null;
     }
 
-    return this.getRoutePathname(routeName)
+    return this.getRoutePathname(routeName);
   }
 
   /**
    * Return the query parameters of the current location.
    */
   getCurrentRouteQueryStringParameters<Q>(): MaybeUndef<Q> {
-    const { search } = this._assertLocationDefined()
+    const { search } = this._assertLocationDefined();
 
     return parseQs(search, {
       allowDots: true,
-      ignoreQueryPrefix: true
-    }) as unknown as Q
+      ignoreQueryPrefix: true,
+    }) as unknown as Q;
   }
 
   /**
@@ -214,22 +214,22 @@ export default class UrlBuilder<
     return {
       routeName: this.getCurrentRouteName(),
       routeParameters: null,
-      queryStringParameters: this.getCurrentRouteQueryStringParameters<Q>()
-    }
+      queryStringParameters: this.getCurrentRouteQueryStringParameters<Q>(),
+    };
   }
 
   /**
    * Return the specifications of the routeName retrieved from the
    * current history pathname.
    */
-  getCurrentRouteSpecs(): Maybe<IRouteSpecs<RD['routeName']>> {
-    const routeName = this.getCurrentRouteName()
+  getCurrentRouteSpecs(): Maybe<IRouteSpecs<RD["routeName"]>> {
+    const routeName = this.getCurrentRouteName();
 
     if (!routeName) {
-      return null
+      return null;
     }
 
-    return this._routes[routeName]
+    return this._routes[routeName];
   }
 
   /**
@@ -239,53 +239,53 @@ export default class UrlBuilder<
     routeDefinition: RD,
     options?: { absolute: boolean }
   ): string {
-    const { routeName, parameters, queryStringParameters } = routeDefinition
+    const { routeName, parameters, queryStringParameters } = routeDefinition;
 
-    const pathname = this.getRoutePathname(routeName)
-    const allParameters = this._getAllRouteParameters(parameters)
+    const pathname = this.getRoutePathname(routeName);
+    const allParameters = this._getAllRouteParameters(parameters);
 
     // replace parameters values
-    const urlParts = []
+    const urlParts = [];
 
     if (options?.absolute) {
-      urlParts.push(document.location.origin)
-      urlParts.push(document.location.pathname)
-      urlParts.push('#')
+      urlParts.push(document.location.origin);
+      urlParts.push(document.location.pathname);
+      urlParts.push("#");
     }
 
-    urlParts.push(this._buildPathnameParams(pathname, allParameters))
+    urlParts.push(this._buildPathnameParams(pathname, allParameters));
 
     if (!queryStringParameters) {
-      return urlParts.join('')
+      return urlParts.join("");
     }
 
     // add querystring parameters
-    const queryString = this.computeRouteQueryString(queryStringParameters)
+    const queryString = this.computeRouteQueryString(queryStringParameters);
 
     if (!queryString) {
-      return urlParts.join('')
+      return urlParts.join("");
     }
 
-    return `${urlParts.join('')}?${queryString}`
+    return `${urlParts.join("")}?${queryString}`;
   }
 
   /**
    * Compute the querystring from the route querystring parameters.
    */
   computeRouteQueryString(
-    queryStringParameters: RD['queryStringParameters']
+    queryStringParameters: RD["queryStringParameters"]
   ): string {
     return stringifyQs(queryStringParameters, {
       allowDots: true,
-      skipNulls: true
-    })
+      skipNulls: true,
+    });
   }
 
   /**
    * Causes a hard redirection to /.
    */
   hardRedirectToRoot() {
-    window.document.location.href = '/'
+    window.document.location.href = "/";
   }
 
   /**
@@ -295,18 +295,18 @@ export default class UrlBuilder<
     // take the location of the window to manipule browser href
 
     if (!routeDefinition) {
-      this.reload()
-      return
+      this.reload();
+      return;
     }
 
-    if (typeof routeDefinition === 'string') {
-      window.document.location.href = routeDefinition
-      return
+    if (typeof routeDefinition === "string") {
+      window.document.location.href = routeDefinition;
+      return;
     }
 
-    const url = this.computeRouteUrl(routeDefinition)
+    const url = this.computeRouteUrl(routeDefinition);
 
-    window.document.location.href = forgeClientPathname('/identity')(url)
+    window.document.location.href = forgeClientPathname("/identity")(url);
   }
 
   /**
@@ -314,73 +314,73 @@ export default class UrlBuilder<
    * Useful for menu selections.
    */
   isCurrentPathnameStartsWith(pathname: string): boolean {
-    return this.getCurrentRouteSpecs()?.pathname.startsWith(pathname) || false
+    return this.getCurrentRouteSpecs()?.pathname.startsWith(pathname) || false;
   }
 
   /**
    * Log registered routes.
    */
   dumpRoutes() {
-    const allRouteNames = Object.keys(this._routes) as Array<RD['routeName']>
+    const allRouteNames = Object.keys(this._routes) as Array<RD["routeName"]>;
 
-    allRouteNames.forEach(routeName => {
-      const routeSpecs = this._routes[routeName]
-      this._logger('info')(`- ${routeName}: ${routeSpecs.pathname}`)
-    })
+    allRouteNames.forEach((routeName) => {
+      const routeSpecs = this._routes[routeName];
+      this._logger("info")(`- ${routeName}: ${routeSpecs.pathname}`);
+    });
   }
 
   /**
    * Reload
    */
   reload() {
-    window.document.location.reload()
+    window.document.location.reload();
   }
 
   /**
    * Return the history object
    */
   get history(): History {
-    return this._assertHistoryDefined()
+    return this._assertHistoryDefined();
   }
 
   /**
    * Return the location object
    */
   get location(): Location {
-    return this._assertLocationDefined()
+    return this._assertLocationDefined();
   }
 
   /**
    * Return the navigate function.
    */
   get navigate(): NavigateFunction {
-    return this._assertNavigateFunctionDefined()
+    return this._assertNavigateFunctionDefined();
   }
 
   /* Private */
 
   private _assertHistoryDefined(): History {
     if (!this._history) {
-      throw new Error('History is not defined')
+      throw new Error("History is not defined");
     }
 
-    return this._history
+    return this._history;
   }
 
   private _assertLocationDefined(): Location {
     if (!this._location) {
-      throw new Error('Location is not defined')
+      throw new Error("Location is not defined");
     }
 
-    return this._location
+    return this._location;
   }
 
   private _assertNavigateFunctionDefined(): NavigateFunction {
     if (!this._navigate) {
-      throw new Error('Navigate function is not defined')
+      throw new Error("Navigate function is not defined");
     }
 
-    return this._navigate
+    return this._navigate;
   }
 
   /**
@@ -391,9 +391,9 @@ export default class UrlBuilder<
   ): RouteUrlParameters {
     const allParameters: RouteUrlParameters = {
       ...this._defaultRouteParameters,
-      ...routeParameters
-    }
-    return allParameters
+      ...routeParameters,
+    };
+    return allParameters;
   }
 
   /**
@@ -403,26 +403,26 @@ export default class UrlBuilder<
     pathname: string,
     allParameters: RouteUrlParameters
   ): string {
-    let url = pathname.replace(/:(\w+)/g, parameterName => {
+    let url = pathname.replace(/:(\w+)/g, (parameterName) => {
       // remove ':' at beginning
-      const replacement = get(allParameters, parameterName.slice(1))
+      const replacement = get(allParameters, parameterName.slice(1));
 
       if (replacement === undefined) {
-        this._logger('warn')(
+        this._logger("warn")(
           `Missing replacement for the parameter "${parameterName}" in the endpoint "${pathname}".`
-        )
-        return parameterName
+        );
+        return parameterName;
       }
 
-      return String(replacement)
-    })
+      return String(replacement);
+    });
 
     // trim trailing '/'
-    if (url !== '/') {
-      url = url.replace(/\/*$/, '')
+    if (url !== "/") {
+      url = url.replace(/\/*$/, "");
     }
 
-    return url
+    return url;
   }
 
   /**
@@ -432,35 +432,35 @@ export default class UrlBuilder<
   private _castParameters<T extends RD>(
     route: T,
     parameters: {
-      [key: string]: string
+      [key: string]: string;
     }
-  ): T['parameters'] {
+  ): T["parameters"] {
     const paramTypes = Object.entries(route.parameters).reduce(
       (acc, [param, type]) => {
-        acc.set(param, typeof type === 'number' ? 'number' : 'string')
-        return acc
+        acc.set(param, typeof type === "number" ? "number" : "string");
+        return acc;
       },
-      new Map<string, 'string' | 'number'>()
-    )
+      new Map<string, "string" | "number">()
+    );
 
-    const finalParams = Object.entries(parameters).reduce<T['parameters']>(
+    const finalParams = Object.entries(parameters).reduce<T["parameters"]>(
       (acc, [key, value]) => {
         if (!isDefined(value)) {
-          return acc
+          return acc;
         }
 
         const isDigit =
-          paramTypes.get(key) === 'number' && /^[0-9]+$/.test(value)
+          paramTypes.get(key) === "number" && /^[0-9]+$/.test(value);
 
         return {
           ...acc,
-          [key]: isDigit ? Number(value) : value
-        }
+          [key]: isDigit ? Number(value) : value,
+        };
       },
       {}
-    )
+    );
 
-    return finalParams
+    return finalParams;
   }
 
   /**
@@ -470,25 +470,25 @@ export default class UrlBuilder<
     pathname: string,
     allParameters: RouteUrlParameters
   ): string {
-    let url = pathname.replace(/:(\w+)/g, parameterName => {
+    let url = pathname.replace(/:(\w+)/g, (parameterName) => {
       // remove ':' at beginning
-      const replacement = get(allParameters, parameterName.slice(1))
+      const replacement = get(allParameters, parameterName.slice(1));
 
       if (replacement === undefined) {
-        this._logger('warn')(
+        this._logger("warn")(
           `Missing replacement for the parameter "${parameterName}" in the endpoint "${pathname}".`
-        )
-        return parameterName
+        );
+        return parameterName;
       }
 
-      return String(replacement)
-    })
+      return String(replacement);
+    });
 
     // trim trailing '/'
-    if (url !== '/') {
-      url = url.replace(/\/*$/, '')
+    if (url !== "/") {
+      url = url.replace(/\/*$/, "");
     }
 
-    return url
+    return url;
   }
 }

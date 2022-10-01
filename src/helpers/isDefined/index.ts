@@ -1,4 +1,4 @@
-import { Perhaps } from 'src/types'
+import { Perhaps } from "../../types";
 
 /**
  * Returns a type predicate to remove undefined or nullable values of an array.
@@ -7,7 +7,7 @@ import { Perhaps } from 'src/types'
  * arr.filter(isDefined)
  */
 export function isDefined<T>(o: Perhaps<T>): o is T {
-  return o !== undefined && o !== null
+  return o !== undefined && o !== null;
 }
 
 /**
@@ -17,7 +17,7 @@ export function isDefined<T>(o: Perhaps<T>): o is T {
  * arr.filter(isNotFalsy)
  */
 export function isNotFalsy<T>(o: Perhaps<T | boolean | string>): o is T {
-  return o !== undefined && o !== null && o !== false && o !== ''
+  return o !== undefined && o !== null && o !== false && o !== "";
 }
 
 /**
@@ -27,12 +27,12 @@ export function isDefinedAndNotEmptyString(
   value: Perhaps<string>
 ): value is string {
   if (!isDefined(value)) {
-    return false
+    return false;
   }
 
-  if (String(value.trim()) === '') {
-    return false
+  if (String(value.trim()) === "") {
+    return false;
   }
 
-  return true
+  return true;
 }

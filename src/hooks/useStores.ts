@@ -1,28 +1,28 @@
-import { Maybe } from 'src/types'
-import { createContext, useContext } from 'react'
-import StoreRoot from '../stores/StoreRoot'
-import { IStores } from '../stores/types'
+import { createContext, useContext } from "react";
+import StoreRoot from "../stores/StoreRoot";
+import { IStores } from "../stores/types";
+import { Maybe } from "../types";
 
 export interface IContextStores {
-  storeRoot: Maybe<StoreRoot>
+  storeRoot: Maybe<StoreRoot>;
 }
 
-export const ContextStores = createContext<IContextStores>({ storeRoot: null })
+export const ContextStores = createContext<IContextStores>({ storeRoot: null });
 
 /**
  * Retrieve MobX stores from the context.
  */
 export function useStores(): IStores & { storeRoot: StoreRoot } {
-  const value = useContext(ContextStores)
+  const value = useContext(ContextStores);
 
   if (!value.storeRoot) {
-    throw new Error('Root store has not been found')
+    throw new Error("Root store has not been found");
   }
 
   const allStores = {
     ...value.storeRoot.stores,
-    storeRoot: value.storeRoot
-  }
+    storeRoot: value.storeRoot,
+  };
 
-  return allStores
+  return allStores;
 }
