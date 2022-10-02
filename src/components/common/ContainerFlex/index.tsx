@@ -27,7 +27,7 @@ const Div = styled.div<IContainerFlexProps>((props) => {
       gap: props.flexGap && themes.white.sizes[props.flexGap],
       height: props.height,
       backgroundColor: themes.white.colors.pds["tenb-colors-background-page"],
-      padding: themes.white.sizes["tenb-space-8"],
+      padding: themes.white.sizes["tenb-space-16"],
 
       // Size
       ...(props.fullHeight ? { height: "100%" } : {}),
