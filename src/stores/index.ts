@@ -1,5 +1,5 @@
 /* Page stores */
 
-/** Page stores - Dashboard */
+/** Page stores - Heroes */
 
-export { default as StorePageDashboard } from "../components/pages/PageDashboard/StorePageDashboard";
+export { default as StorePageHeroes } from "../components/pages/PageHeroes/StorePageHeroes";

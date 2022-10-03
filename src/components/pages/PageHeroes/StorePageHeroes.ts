@@ -6,7 +6,7 @@ import { HEROES_API } from "../../../constants";
 import IHero from "../../../models/hero.model";
 import { Maybe } from "../../../types";
 
-export default class StorePageDashboard extends StoreBase {
+export default class StorePageHeroes extends StoreBase {
   /**
    * Private
    */

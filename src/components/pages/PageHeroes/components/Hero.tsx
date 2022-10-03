@@ -20,9 +20,6 @@ const TD = styled.td((props) => {
     .end();
 });
 
-/**
- * Dashboard page.
- */
 export function Hero(props: IHeroProps) {
   return (
     <TR>

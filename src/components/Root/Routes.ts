@@ -6,7 +6,7 @@ export enum AppRouteName {
 
   /* Mains */
 
-  "Dashboard" = "Dashboard",
+  "Heroes" = "Heroes",
 }
 
 /* Routes definitions */
@@ -23,9 +23,8 @@ export interface IHomePageRouteDefinition
 
 // --- Main
 
-export interface IDashboardRouteDefinition
-  extends IRouteDefinition<AppRouteName> {
-  routeName: AppRouteName.Dashboard;
+export interface IHeroesRouteDefinition extends IRouteDefinition<AppRouteName> {
+  routeName: AppRouteName.Heroes;
   parameters: {};
 }
 
@@ -34,7 +33,7 @@ export interface IDashboardRouteDefinition
 export type AppRouteDefinition =
   | IRootRouteDefinition
   | IHomePageRouteDefinition
-  | IDashboardRouteDefinition;
+  | IHeroesRouteDefinition;
 
 /* Routes record */
 
@@ -50,10 +49,10 @@ export const appRoutes: Routes<AppRouteName> = {
     pathname: "/",
   },
 
-  /* --- Dashboard */
+  /* --- Heroes */
 
-  [AppRouteName.Dashboard]: {
-    routeName: AppRouteName.Dashboard,
-    pathname: "/dashboard",
+  [AppRouteName.Heroes]: {
+    routeName: AppRouteName.Heroes,
+    pathname: "/heroes",
   },
 };

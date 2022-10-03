@@ -30,22 +30,22 @@ const Header = styled.td((props) => {
     .end();
 });
 /**
- * Dashboard page.
+ * Heroes page.
  */
-export function PageDashboard(props: IPageWelcomeProps) {
-  const { storePageDashboard } = useStores();
+const PageHeroes = (props: IPageWelcomeProps) => {
+  const { storePageHeroes } = useStores();
 
   useEffect(() => {
-    storePageDashboard.fetchSuperHeroes();
+    storePageHeroes.fetchSuperHeroes();
 
     return () => {
-      storePageDashboard.reset();
+      storePageHeroes.reset();
     };
-  }, [storePageDashboard]);
+  }, [storePageHeroes]);
 
   return (
     <StyledContainerFlex
-      name="DashboardPage"
+      name="HeroesPage"
       flexDirection="column"
       flexGap="tenb-space-32"
       fullWidth
@@ -59,13 +59,13 @@ export function PageDashboard(props: IPageWelcomeProps) {
             <Header>Hero name</Header>
             <Header>Publisher</Header>
           </tr>
-          {storePageDashboard.heroes.map((hero) => {
+          {storePageHeroes.heroes.map((hero) => {
             return <Hero hero={hero} key={hero.id} />;
           })}
         </tbody>
       </Table>
     </StyledContainerFlex>
   );
-}
+};
 
-export default observer(PageDashboard);
+export default observer(PageHeroes);

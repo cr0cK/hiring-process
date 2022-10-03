@@ -1,4 +1,4 @@
-import { StorePageDashboard } from "..";
+import { StorePageHeroes } from "..";
 
 import { UrlBuilderClient } from "../../libs/UrlBuilder/types";
 import UrlBuilder from "../../libs/UrlBuilder/UrlBuilder";
@@ -63,8 +63,8 @@ export default class StoreRoot {
 
       /* Page stores */
 
-      /** Pages stores - Dashboard */
-      storePageDashboard: new StorePageDashboard(this, {}),
+      /** Pages stores - Heroes */
+      storePageHeroes: new StorePageHeroes(this, {}),
     };
   }
 }
