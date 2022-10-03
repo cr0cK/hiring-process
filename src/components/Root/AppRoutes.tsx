@@ -2,6 +2,7 @@ import { useUrlBuilder } from "../../hooks/useUrlBuilder";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AppRouteName } from "./Routes";
 import PageHeroes from "../pages/PageHeroes";
+import PageHeroDetails from "../pages/PageHeroDetails";
 
 export interface IAppRoutesProps {}
 
@@ -16,6 +17,10 @@ export default function AppRoutes(props: IAppRoutesProps) {
       <Route
         path={`${urlBuilder.getRoutePathname(AppRouteName.Heroes)}`}
         element={<PageHeroes />}
+      />
+      <Route
+        path={`${urlBuilder.getRoutePathname(AppRouteName.HeroDetails)}`}
+        element={<PageHeroDetails />}
       />
 
       <Route

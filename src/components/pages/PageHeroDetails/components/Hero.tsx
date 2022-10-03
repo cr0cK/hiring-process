@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { useUrlBuilder } from "../../../../hooks/useUrlBuilder";
 import { buildVariants } from "../../../../libs/react-helpers/buildVariants";
 import { ITagProperties } from "../../../../libs/react-helpers/forwardProps/types";
 import IHero from "../../../../models/hero.model";
 import { themes } from "../../../../styles/themes";
-import { handleShowHeroDetailsOnClick } from "../handlers";
 
 export interface IHeroProps extends ITagProperties<HTMLTableRowElement> {
   hero: IHero;
@@ -22,14 +20,9 @@ const TD = styled.td((props) => {
     .end();
 });
 
-/**
- * Dashboard page.
- */
 export function Hero(props: IHeroProps) {
-  const { urlBuilder } = useUrlBuilder();
-
   return (
-    <TR onClick={handleShowHeroDetailsOnClick(urlBuilder)(props.hero)}>
+    <TR>
       <TD>{props.hero.name}</TD>
       <TD>{props.hero.biography.publisher}</TD>
     </TR>

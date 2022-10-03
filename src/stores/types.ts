@@ -7,6 +7,8 @@ export interface IStores {
   /* Page stores */
 
   storePageHeroes: stores.StorePageHeroes;
+
+  storePageHeroDetails: stores.StorePageHeroDetails;
 }
 
 /**
