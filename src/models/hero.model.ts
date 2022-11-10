@@ -35,7 +35,7 @@ export default interface IHero {
     groupAffiliation: string;
     relatives: string;
   };
-  images: {
+  picture: {
     xs: string;
     sm: string;
     md: string;
